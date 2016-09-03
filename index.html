@@ -1,0 +1,56 @@
+---
+layout: default
+---
+
+<div class="section left">
+  {% include about.html %}
+
+  <section class="posts-excerpt">
+    {% for post in paginator.posts %}
+      {% assign author = site.data.authors[post.author] %}
+      <article class="post">
+        <header class="main-title">
+          <div class="name"> <a href="{{ author.url }}" target="_blank">{{ author.name }}</a> </div>
+          <div class="avatar"><a href="{{ author.url }}" target="_blank"> <img src="{{ author.avatar }}?s=80"/> </a> </div>
+          <div class="arrow-right">
+        </header>
+
+        <h3 class="post-title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h3>
+        <p>
+          {{ post.content | truncatewords: 50 }}
+        </p>
+
+        <footer class="info">
+          <time> {{ post.date | date: "%B %-d, %Y" }} </time>
+          <a href="{{ post.url | prepend: site.baseurl }}">read more</a>
+        </footer>
+      </article>
+    {% endfor %}
+  </section>
+
+  <div class="pagination">
+    {% if paginator.previous_page %}
+      <a href="{{ paginator.previous_page_path }}" class="previous">← Previous</a>
+    {% else %}
+      <span class="previous_page disabled">← Previous</span>
+    {% endif %}
+    {% for page in (1..paginator.total_pages) %}
+      {% if page == paginator.page %}
+        <em>{{ page }}</em>
+      {% elsif page == 1 %}
+        <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">{{ page }}</a>
+      {% else %}
+        <a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a>
+      {% endif %}
+    {% endfor %}
+    {% if paginator.next_page %}
+      <a href="{{ paginator.next_page_path }}" class="next">Next →</a>
+    {% else %}
+      <span class="next_page disabled">Next →</span>
+    {% endif %}
+  </div>
+</div>
+
+<div class="aside right">
+  {% include calendar.html %}
+</div>
